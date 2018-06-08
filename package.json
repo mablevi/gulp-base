@@ -1,0 +1,28 @@
+{
+  "name": "study",
+  "version": "1.0.0",
+  "description": "test",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.24.4",
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-changed": "^3.2.0",
+    "gulp-clean-css": "^3.9.4",
+    "gulp-concat": "^2.6.1",
+    "gulp-debug": "^4.0.0",
+    "gulp-htmlmin": "^4.0.0",
+    "gulp-imagemin": "^4.1.0",
+    "gulp-less": "^3.5.0",
+    "gulp-smushit": "^1.2.0",
+    "gulp-uglify": "^3.0.0",
+    "imagemin-pngquant": "^5.1.0"
+  },
+  "dependencies": {}
+}
