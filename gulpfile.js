@@ -28,20 +28,25 @@ gulp.task('less',() => {
     gulp.src('src/less/*.less'),
     changed('dist/css', { extension:'.less' }),
     less(),
-    concat('main.css'),
+    concat('style.css'),
     cleanCSS(),
     gulp.dest('dist/css/')
   ]);
+});
 
+// 开发环境环境
+gulp.task('dev-less', () => {
+  pump([
+    gulp.src('src/less/*.less'),
+    changed('dist/css', { extension:'.less' }),
+    less(),
+    concat('style.css'),
+    gulp.dest('dist/css/')
+  ]);
 });
 
 // 压缩JS
 gulp.task('script', () => {
-  gulp.src(['src/js/*.js'])
-      .pipe(changed('dist/js', {hasChanged: changed.compareContents}))
-      .pipe(ugLify()) // 混淆压缩JS
-      .pipe(concat('index.js')) // 合并
-      .pipe(gulp.dest('dist/js/')); // 将会在dist/js 下面生成index.js
   pump([
     gulp.src('src/js/*.js'),
     changed('dist/js', { extension:'.js' }),
@@ -51,10 +56,16 @@ gulp.task('script', () => {
   ]);
 });
 
+gulp.task('dev-script', () => {
+  pump([
+    gulp.src('src/js/*.js'),
+    changed('dist/js', { extension:'.js' }),
+    gulp.dest('dist/js/')
+  ]);
+});
+
 // 压缩图片
 gulp.task('image', () => {
-  // gulp.src('src/images/*.{jpg,png}') // 只优化 jpg,png (也可以写成 *.*)
-  //     .pipe(gulp.dest('dist/images')); // 将会在dist/images 下面压缩图片
   pump([
     gulp.src('src/images/*.*'),
     cache('move-images'),
@@ -78,9 +89,16 @@ gulp.task('html', () => {
     gulp.dest('dist')
   ])
 });
-
+// 开发环境
+gulp.task('dev-html', () => {
+  pump([
+    gulp.src('src/*.html'),
+    gulp.dest('dist')
+  ])
+});
+// 热更新服务
 gulp.task('serve', ['clean'], () => {
-  gulp.start('script','less','html','image');
+  gulp.start('dev-script','dev-less','dev-html','image');
   browserSync.init({
     port:9088,
     server: {
@@ -88,17 +106,12 @@ gulp.task('serve', ['clean'], () => {
     }
   });
 
-  gulp.watch('src/js/*.js', ['script']).on("change", reload);
+  // gulp.watch('src/js/*.js', ['script']).on("change", reload);
   gulp.watch('src/less/*.less', ['less']).on("change", reload);
-  gulp.watch('src/*.html', ['html']).on("change", reload);
+  // gulp.watch('src/*.html', ['html']).on("change", reload);
   gulp.watch('src/images/*.*', ['image']).on("change", reload);
 
 });
 
 gulp.task('default',['serve']);  // 定义默认任务 -- 开发环境
-gulp.task('build', ['clean','script','less','html','image']); // 生产环境
-//gulp.task('default', ['less', 'script', 'image', 'html']); // 定义默认任务
-
-// gulp.task(name[, deps], fn) 定义任务 name:任务名称 deps:依赖任务名称 fn:回调函数
-// gulp.src(globs[, options]) 执行任务处理的文件 globs: 处理文件的路径（字符串或者字符串数组）
-// gulp.dest(path[, options]) 处理完后文件生成的路径
+gulp.task('build', ['clean','script','less','image']); // 生产环境
