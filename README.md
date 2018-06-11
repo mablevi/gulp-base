@@ -4,9 +4,17 @@
 
 <pre>
   <code>
-    $ npm install
+    $ npm install 
   </code>
 </pre>
+
+----
+<code>
+  $ npm gulp  //开发环境 本地服务+热更新
+</code>
+<code>
+  $ npm gulp build // 生产环境
+</code>
 
 ## gulp插件
 
