@@ -4,7 +4,7 @@
 
 <pre>
   <code>
-    $ npm install 
+    $ npm install
   </code>
 </pre>
 
@@ -28,6 +28,10 @@
 * gulp-imagemin `图片压缩`
 * gulp-debug `debug`
 * del `删除文件或者文件夹`
+* pump `小节点模块，将流连接在一起`
+* gulp-clean `删除文件或者文件夹`
+* gulp-cached `把文件放到缓存上然后比较文件`
+* glup-plumber `捕获处理任务中的错误`
 
 ## 参考链接
 
@@ -36,4 +40,3 @@
 - [Gulp编译、合并、压缩，以及Browsersync实时刷新教程](https://blog.csdn.net/beverley__/article/details/55213235)
 - [使用Gulp进行图片优化](https://www.jianshu.com/p/d6c11d6619e0)
 - [gulp browser-sync监控到文件更新, 但是页面不自动刷新,为什么 ?](https://segmentfault.com/q/1010000008475537)
-
