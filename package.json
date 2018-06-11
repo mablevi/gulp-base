@@ -13,10 +13,11 @@
     "browser-sync": "^2.24.4",
     "del": "^3.0.0",
     "gulp": "^3.9.1",
+    "gulp-cached": "^1.1.1",
     "gulp-changed": "^3.2.0",
+    "gulp-clean": "^0.4.0",
     "gulp-clean-css": "^3.9.4",
     "gulp-concat": "^2.6.1",
-    "gulp-debug": "^4.0.0",
     "gulp-htmlmin": "^4.0.0",
     "gulp-imagemin": "^4.1.0",
     "gulp-less": "^3.5.0",
@@ -24,5 +25,7 @@
     "gulp-uglify": "^3.0.0",
     "imagemin-pngquant": "^5.1.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "pump": "^3.0.0"
+  }
 }
