@@ -3,6 +3,7 @@ const gulp = require('gulp'),
     pump = require('pump'),
     clean = require('gulp-clean'),
     cache = require('gulp-cached'),
+    plumber = require('gulp-plumber'), // 捕获处理任务中的错误
     changed = require('gulp-changed'), // 检查文件是否改变
     htmlmin = require('gulp-htmlmin'), // 压缩html
     imagemin = require('gulp-imagemin'), // 压缩图片 格式很多（速度很快,压缩率很低）
@@ -26,6 +27,7 @@ gulp.task('clean', (cb) => {
 gulp.task('less',() => {
   pump([
     gulp.src('src/less/*.less'),
+    plumber(),
     changed('dist/css', { extension:'.less' }),
     less(),
     concat('style.css'),
@@ -38,6 +40,7 @@ gulp.task('less',() => {
 gulp.task('dev-less', () => {
   pump([
     gulp.src('src/less/*.less'),
+    plumber(),
     changed('dist/css', { extension:'.less' }),
     less(),
     concat('style.css'),
@@ -107,8 +110,8 @@ gulp.task('serve', ['clean'], () => {
   });
 
   // gulp.watch('src/js/*.js', ['script']).on("change", reload);
-  gulp.watch('src/less/*.less', ['less']).on("change", reload);
-  // gulp.watch('src/*.html', ['html']).on("change", reload);
+  gulp.watch('src/less/*.less', ['dev-less']).on("change", reload);
+  gulp.watch('src/*.html', ['dev-html']).on("change", reload);
   gulp.watch('src/images/*.*', ['image']).on("change", reload);
 
 });
