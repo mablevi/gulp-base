@@ -1,0 +1,9 @@
+html body {
+  -webkit-font-smoothing: antialiased;
+}
+body {
+  font-family: -apple-system-font, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+div {
+  color: #999;
+}

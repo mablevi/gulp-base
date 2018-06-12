@@ -3,6 +3,7 @@ const gulp = require('gulp'),
     pump = require('pump'),
     clean = require('gulp-clean'),
     cache = require('gulp-cached'),
+    autoprefixer = require('gulp-autoprefixer'), // 添加浏览器后缀
     plumber = require('gulp-plumber'), // 捕获处理任务中的错误
     changed = require('gulp-changed'), // 检查文件是否改变
     htmlmin = require('gulp-htmlmin'), // 压缩html
@@ -30,7 +31,12 @@ gulp.task('less',() => {
     plumber(),
     changed('dist/css', { extension:'.less' }),
     less(),
-    concat('style.css'),
+    autoprefixer({
+      browsers: ['last 2 versions', 'Firefox ESR'],
+      cascade: true, //是否美化属性值 默认：true
+      remove: true //是否去掉不必要的前缀 默认：true
+    }),
+    //concat('style.css'),
     cleanCSS(),
     gulp.dest('dist/css/')
   ]);
@@ -43,7 +49,12 @@ gulp.task('dev-less', () => {
     plumber(),
     changed('dist/css', { extension:'.less' }),
     less(),
-    concat('style.css'),
+    autoprefixer({
+      browsers: ['last 2 versions','Firefox ESR'],
+      cascade: true, //是否美化属性值 默认：true
+      remove: true //是否去掉不必要的前缀 默认：true
+    }),
+    // concat('style.css'),
     gulp.dest('dist/css/')
   ]);
 });

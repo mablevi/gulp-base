@@ -1,0 +1,12 @@
+.wrap {
+  font-size: 12px;
+}
+.wrap .a {
+  color: red;
+  border-radius: 5px;
+  -webkit-transform: rotate(10deg);
+          transform: rotate(10deg);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
