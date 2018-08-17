@@ -9,12 +9,16 @@
 </pre>
 
 ----
-<code>
-  $ gulp  //开发环境 本地服务+热更新
-</code>
-<code>
-  $ gulp build // 生产环境
-</code>
+<pre>
+  <code>
+    $ gulp  //开发环境 本地服务+热更新
+  </code>
+</pre>
+<pre>
+  <code>
+    $ gulp build // 生产环境
+  </code>
+</pre>
 
 ## gulp插件
 
