@@ -1,12 +1,25 @@
+div {
+  color: red;
+  height: 20px;
+  font-size: 20px;
+  line-height: 30px;
+  width: 600px;
+  margin: 50px auto;
+}
+
+html body {
+  -webkit-font-smoothing: antialiased;
+}
+body {
+  font-family: -apple-system-font, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+
 .wrap {
   font-size: 12px;
 }
 .wrap .a {
   color: red;
   border-radius: 5px;
-  -webkit-transform: rotate(10deg);
-          transform: rotate(10deg);
-  display: -webkit-box;
-  display: -ms-flexbox;
+  transform: rotate(10deg);
   display: flex;
 }
