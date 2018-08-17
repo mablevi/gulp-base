@@ -10,10 +10,10 @@
 
 ----
 <code>
-  $ npm gulp  //开发环境 本地服务+热更新
+  $ gulp  //开发环境 本地服务+热更新
 </code>
 <code>
-  $ npm gulp build // 生产环境
+  $ gulp build // 生产环境
 </code>
 
 ## gulp插件
@@ -32,6 +32,7 @@
 * gulp-clean `删除文件或者文件夹`
 * gulp-cached `把文件放到缓存上然后比较文件`
 * glup-plumber `捕获处理任务中的错误`
+* ...
 
 ## 参考链接
 
