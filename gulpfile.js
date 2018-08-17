@@ -3,7 +3,6 @@ const gulp = require('gulp'),
     pump = require('pump'),
     clean = require('gulp-clean'),
     cache = require('gulp-cached'),
-    autoprefixer = require('gulp-autoprefixer'), // 添加浏览器后缀
     plumber = require('gulp-plumber'), // 捕获处理任务中的错误
     changed = require('gulp-changed'), // 检查文件是否改变
     htmlmin = require('gulp-htmlmin'), // 压缩html
@@ -31,12 +30,7 @@ gulp.task('less',() => {
     plumber(),
     changed('dist/css', { extension:'.less' }),
     less(),
-    autoprefixer({
-      browsers: ['last 2 versions', 'Firefox ESR'],
-      cascade: true, //是否美化属性值 默认：true
-      remove: true //是否去掉不必要的前缀 默认：true
-    }),
-    //concat('style.css'),
+    concat('style.css'),
     cleanCSS(),
     gulp.dest('dist/css/')
   ]);
@@ -49,12 +43,7 @@ gulp.task('dev-less', () => {
     plumber(),
     changed('dist/css', { extension:'.less' }),
     less(),
-    autoprefixer({
-      browsers: ['last 2 versions','Firefox ESR'],
-      cascade: true, //是否美化属性值 默认：true
-      remove: true //是否去掉不必要的前缀 默认：true
-    }),
-    // concat('style.css'),
+    concat('style.css'),
     gulp.dest('dist/css/')
   ]);
 });
@@ -81,7 +70,7 @@ gulp.task('dev-script', () => {
 // 压缩图片
 gulp.task('image', () => {
   pump([
-    gulp.src('src/images/*.*'),
+    gulp.src('src/images/**/*'),
     cache('move-images'),
     gulp.dest('dist/images')
   ])
@@ -120,12 +109,15 @@ gulp.task('serve', ['clean'], () => {
     }
   });
 
-  // gulp.watch('src/js/*.js', ['script']).on("change", reload);
+  gulp.watch('src/js/*.js', ['script']).on("change", reload);
   gulp.watch('src/less/*.less', ['dev-less']).on("change", reload);
   gulp.watch('src/*.html', ['dev-html']).on("change", reload);
-  gulp.watch('src/images/*.*', ['image']).on("change", reload);
+  gulp.watch('src/images/**/*', ['image']).on("change", reload);
 
 });
 
-gulp.task('default',['serve']);  // 定义默认任务 -- 开发环境
-gulp.task('build', ['clean','script','less','image']); // 生产环境
+gulp.task('default',['serve']);  // 定义默认任务 -- 开发环境  $ gulp
+// 生产环境  $gulp build
+gulp.task('build', ['clean'], () => {
+  gulp.start('html','script','less','image');
+});
