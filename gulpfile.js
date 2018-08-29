@@ -13,6 +13,8 @@ const gulp = require('gulp'),
     cleanCSS = require('gulp-clean-css'), // 压缩css为一行
     less = require('gulp-less'), // less编译成css文件
     browserSync = require('browser-sync').create(), // 浏览器实时刷新\
+    postcss = require('gulp-postcss'), //
+    autoprefixer = require('autoprefixer'), // 给css 添加前缀
     reload = browserSync.reload;
 
 // 删除dist下面所有的文件
@@ -43,6 +45,14 @@ gulp.task('dev-less', () => {
     plumber(),
     changed('dist/css', { extension:'.less' }),
     less(),
+    postcss([
+      autoprefixer({
+        // 兼容主流浏览器的最新两个版本
+        browsers: ['last 2 versions', 'Firefox >= 20'],
+        // 是否美化属性值
+        cascade: true
+      })
+    ]),
     concat('style.css'),
     gulp.dest('dist/css/')
   ]);
