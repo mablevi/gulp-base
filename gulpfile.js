@@ -3,6 +3,7 @@ const gulp = require('gulp'),
     pump = require('pump'),
     clean = require('gulp-clean'),
     cache = require('gulp-cached'),
+    autoprefixer = require('gulp-autoprefixer'), // 添加浏览器后缀
     plumber = require('gulp-plumber'), // 捕获处理任务中的错误
     changed = require('gulp-changed'), // 检查文件是否改变
     htmlmin = require('gulp-htmlmin'), // 压缩html
@@ -13,14 +14,12 @@ const gulp = require('gulp'),
     cleanCSS = require('gulp-clean-css'), // 压缩css为一行
     less = require('gulp-less'), // less编译成css文件
     browserSync = require('browser-sync').create(), // 浏览器实时刷新\
-    postcss = require('gulp-postcss'), //
-    autoprefixer = require('autoprefixer'), // 给css 添加前缀
     reload = browserSync.reload;
 
 // 删除dist下面所有的文件
 gulp.task('clean', (cb) => {
   pump([
-    gulp.src('dist'),
+    gulp.src(['dist', '!dist/font']),
     clean()
   ],cb);
 })
@@ -32,7 +31,12 @@ gulp.task('less',() => {
     plumber(),
     changed('dist/css', { extension:'.less' }),
     less(),
-    concat('style.css'),
+    autoprefixer({
+      browsers: ['last 2 versions', 'Firefox ESR'],
+      cascade: true, //是否美化属性值 默认：true
+      remove: true //是否去掉不必要的前缀 默认：true
+    }),
+    //concat('style.css'),
     cleanCSS(),
     gulp.dest('dist/css/')
   ]);
@@ -45,14 +49,11 @@ gulp.task('dev-less', () => {
     plumber(),
     changed('dist/css', { extension:'.less' }),
     less(),
-    postcss([
-      autoprefixer({
-        // 兼容主流浏览器的最新两个版本
-        browsers: ['last 2 versions', 'Firefox >= 20'],
-        // 是否美化属性值
-        cascade: true
-      })
-    ]),
+    autoprefixer({
+      browsers: ['last 2 versions','Firefox ESR'],
+      cascade: true, //是否美化属性值 默认：true
+      remove: true //是否去掉不必要的前缀 默认：true
+    }),
     concat('style.css'),
     gulp.dest('dist/css/')
   ]);
@@ -72,7 +73,7 @@ gulp.task('script', () => {
 gulp.task('dev-script', () => {
   pump([
     gulp.src('src/js/*.js'),
-    changed('dist/js', { extension:'.js' }),
+    cache('move-script'),
     gulp.dest('dist/js/')
   ]);
 });
@@ -80,7 +81,7 @@ gulp.task('dev-script', () => {
 // 压缩图片
 gulp.task('image', () => {
   pump([
-    gulp.src('src/images/**/*'),
+    gulp.src('src/images/*.*'),
     cache('move-images'),
     gulp.dest('dist/images')
   ])
@@ -109,9 +110,18 @@ gulp.task('dev-html', () => {
     gulp.dest('dist')
   ])
 });
+// 字体
+gulp.task('font', () => {
+  pump([
+    gulp.src('scr/font/*.*'),
+    cache('move-font'),
+    gulp.dest('dist/font')
+  ]);
+});
+
 // 热更新服务
-gulp.task('serve', ['clean'], () => {
-  gulp.start('dev-script','dev-less','dev-html','image');
+gulp.task('serve', () => {
+  gulp.start('dev-script','dev-less','dev-html','image','font');
   browserSync.init({
     port:9088,
     server: {
@@ -119,15 +129,12 @@ gulp.task('serve', ['clean'], () => {
     }
   });
 
-  gulp.watch('src/js/*.js', ['script']).on("change", reload);
+  gulp.watch('src/js/*.js', ['dev-script']).on("change", reload);
   gulp.watch('src/less/*.less', ['dev-less']).on("change", reload);
   gulp.watch('src/*.html', ['dev-html']).on("change", reload);
-  gulp.watch('src/images/**/*', ['image']).on("change", reload);
+  gulp.watch('src/images/*.*', ['image']).on("change", reload);
 
 });
 
-gulp.task('default',['serve']);  // 定义默认任务 -- 开发环境  $ gulp
-// 生产环境  $gulp build
-gulp.task('build', ['clean'], () => {
-  gulp.start('html','script','less','image');
-});
+gulp.task('default',['serve']);  // 定义默认任务 -- 开发环境
+gulp.task('build', ['clean','script','less','image','font']); // 生产环境
