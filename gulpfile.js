@@ -7,8 +7,8 @@ const gulp = require('gulp'),
     plumber = require('gulp-plumber'), // 捕获处理任务中的错误
     changed = require('gulp-changed'), // 检查文件是否改变
     htmlmin = require('gulp-htmlmin'), // 压缩html
-    imagemin = require('gulp-imagemin'), // 压缩图片 格式很多（速度很快,压缩率很低）
-    smushit = require('gulp-smushit'), // Yahoo开发的 只能优化PNG和JPG (速度慢,很慢,压缩率很高)
+    // imagemin = require('gulp-imagemin'), // 压缩图片 格式很多（速度很快,压缩率很低）
+    // smushit = require('gulp-smushit'), // Yahoo开发的 只能优化PNG和JPG (速度慢,很慢,压缩率很高)
     ugLify = require('gulp-uglify'), // js压缩混淆
     concat = require('gulp-concat'), // 多个文件合并为一个
     cleanCSS = require('gulp-clean-css'), // 压缩css为一行
@@ -36,7 +36,6 @@ gulp.task('less',() => {
       cascade: true, //是否美化属性值 默认：true
       remove: true //是否去掉不必要的前缀 默认：true
     }),
-    //concat('style.css'),
     cleanCSS(),
     gulp.dest('dist/css/')
   ]);
@@ -78,10 +77,10 @@ gulp.task('dev-script', () => {
   ]);
 });
 
-// 压缩图片
+// 移动图片
 gulp.task('image', () => {
   pump([
-    gulp.src('src/images/*.*'),
+    gulp.src('src/images/**/*'),
     cache('move-images'),
     gulp.dest('dist/images')
   ])
